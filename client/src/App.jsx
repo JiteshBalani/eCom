@@ -9,8 +9,17 @@ import Admin from './pages/Admin/Admin'
 import Orders from './pages/Orders/Orders'
 import SingleProduct from './pages/SingleProduct/SingleProduct'
 import Cart from './pages/Cart/Cart'
+import { useEffect } from 'react';
+import { useAuth } from '@clerk/clerk-react';
+import { setClerkInterceptor } from './api/index';
+import ProductForm from './pages/Admin/ProductForm';
 
 export default function App() {
+  const { getToken } = useAuth();
+
+  useEffect(() => {
+    setClerkInterceptor(getToken); // set token globally once
+  }, [getToken]);
   return (
 
     <>
@@ -18,7 +27,7 @@ export default function App() {
         <Routes>
           <Route path='/signup' element={<Signup/>} />
           <Route path='/login' element={<Login/>} />
-          <Route path='/dashboard' element={<Dashboard/>} />
+          <Route path='/dashboard' element={<ProductForm/>} />
           <Route path='/' element={
             <ProtectedPage>
               <Home/>

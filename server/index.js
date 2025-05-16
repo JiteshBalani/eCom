@@ -15,6 +15,10 @@ app.use(express.json());
 
 app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 
+const productRoutes = require('./routes/productRoutes');
+
+app.use('/api/products', productRoutes);
+
 app.get('/api/protected', ClerkExpressRequireAuth(), (req, res) => {
   const { userId } = req.auth;
   res.json({ message: `Authenticated request from user ${userId}` });

@@ -127,6 +127,7 @@ export default function ProtectedPage({ children, adminOnly = false }) {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            color : "white"
           }}
         >
           <h1 className="text-2xl font-semibold" onClick={() => navigate("/")}>
