@@ -2,7 +2,7 @@ import { useAuth, UserButton } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { enable, disable } from "darkreader";
-import { Layout, Segmented, Flex } from "antd";
+import { Layout, Segmented, Flex, Badge } from "antd";
 import { Footer, Header } from "antd/es/layout/layout";
 import {
   HomeOutlined,
@@ -11,6 +11,7 @@ import {
   ShoppingCartOutlined,
   OrderedListOutlined,
 } from "@ant-design/icons";
+import { useSelector } from "react-redux";
 
 export default function ProtectedPage({ children, adminOnly = false }) {
   const { getToken } = useAuth();
@@ -117,6 +118,8 @@ export default function ProtectedPage({ children, adminOnly = false }) {
     fetchProtectedData();
   }, []);
 
+  const cartQuantity = useSelector((state) => state.cart.quantity);
+
   return (
     <>
       <Layout
@@ -127,7 +130,7 @@ export default function ProtectedPage({ children, adminOnly = false }) {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            color : "white"
+            color: "white",
           }}
         >
           <h1 className="text-2xl font-semibold" onClick={() => navigate("/")}>
@@ -137,14 +140,21 @@ export default function ProtectedPage({ children, adminOnly = false }) {
             className="flex items-center text-lg font-semibold"
             style={{ gap: "2rem" }}
           >
-            <span onClick={() => navigate("/")}>
+            <span className="cursor-pointer" onClick={() => navigate("/")}>
               <HomeOutlined /> Home
             </span>
-            <span onClick={() => navigate("/orders")}>
+            <span
+              className="cursor-pointer"
+              onClick={() => navigate("/orders")}
+            >
               <OrderedListOutlined /> My Orders
             </span>
-            <span onClick={() => navigate("/cart")}>
-              <ShoppingCartOutlined /> Cart
+            <span className="cursor-pointer" onClick={() => navigate("/cart")}>
+              <Badge count={cartQuantity} color="primary" showZero>
+                <ShoppingCartOutlined style={{ fontSize: 25, color: 'white' }}/>
+                {/* <span>🛒</span> */}
+              </Badge>{" "}
+              Cart
             </span>
             <Segmented
               options={[
@@ -168,7 +178,7 @@ export default function ProtectedPage({ children, adminOnly = false }) {
           </div>
         </Header>
 
-        <div style={{ padding: 24, flex: "1 0 auto", background: "#fff" }}>
+        <div className="bg-gray-100" style={{ padding: 24, flex: "1 0 auto" }}>
           {children}
         </div>
 

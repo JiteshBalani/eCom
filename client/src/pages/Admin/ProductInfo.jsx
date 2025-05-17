@@ -11,12 +11,12 @@ const ProductInfo = ({productInfoOpen, setProductInfoOpen, selectedProduct, onPr
     setProductInfoOpen(false);
   };
 
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
+  const handleChange = (payload) => {
+    console.log(`selected ${payload}`);
   };
 
   const handleDelete = () => {
-    console.log('delete button clicked')
+    console.log(`delete button clicked for ${selectedProduct._id}`)
     Modal.confirm({
       title: "Are you sure you want to delete this product?",
       content: "This action cannot be undone.",
@@ -43,12 +43,11 @@ const ProductInfo = ({productInfoOpen, setProductInfoOpen, selectedProduct, onPr
     console.log(response);
   }
   return (
-    <Modal
+    <Modal id={selectedProduct?._id} title={selectedProduct?.productName || 'Product Details'}
       open={productInfoOpen}
       width={800}
       footer={null}
       onCancel={handleCancel}
-      title="Product Details"
     >
       <Flex
         justify="center"
@@ -76,7 +75,7 @@ const ProductInfo = ({productInfoOpen, setProductInfoOpen, selectedProduct, onPr
           mrp: selectedProduct?.mrp,
           category: selectedProduct?.category,
           // Convert array to comma-separated string for display
-          imageURL: selectedProduct?.imageURL,
+          imageURL: selectedProduct?.imageURL[0],
           stock: selectedProduct?.stock,
           services: selectedProduct?.services,
           cod: selectedProduct?.cod,

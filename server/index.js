@@ -13,11 +13,20 @@ const User = require('./models/User');
 const app = express();
 app.use(express.json());
 
-app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
+app.use(cors({
+    origin: process.env.FRONTEND_URL, 
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true // If you're using cookies/sessions
+}));
 
+// const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
+const cartRoutes = require('./routes/cartRoutes');
 
+// app.use('/api/user', userRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/cart', cartRoutes)
 
 app.get('/api/protected', ClerkExpressRequireAuth(), (req, res) => {
   const { userId } = req.auth;

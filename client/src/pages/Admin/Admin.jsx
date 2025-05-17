@@ -4,6 +4,9 @@ import { Button, Input, Table } from 'antd';
 import {SearchOutlined} from "@ant-design/icons";
 import ProductForm from './ProductForm';
 import ProductInfo from './ProductInfo';
+import { useDispatch } from 'react-redux';
+import { setLoading } from '../../app/loaderSlice';
+import Loader from '../../components/Loader';
 
 const Admin = () => {
   
@@ -15,15 +18,21 @@ const Admin = () => {
   const [ selectedProduct, setSelectedProduct] = useState(null);
   const [productInfoOpen, setProductInfoOpen] = useState(false)
 
+  const dispatch = useDispatch();
+
   const getData = async() => {
+    dispatch(setLoading(true));
     try{
       const response = await getAllProducts();
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       const allProducts = response?.data || [];
       setProducts(allProducts);
       setFilteredProducts(allProducts);
     }catch(err){
       setError(err);
       console.log('Failed to fetch the products.', err);
+    }finally{
+    dispatch(setLoading(false));
     }
   };
 
@@ -122,6 +131,8 @@ const Admin = () => {
 
     {/* add product modal */}
     { modalOpen && <ProductForm modalOpen={modalOpen} setModalOpen={setModalOpen} onProductUpdate={onProductUpdate} /> }
+
+    <Loader/>
 
     <Table columns={tableHeadings} 
             dataSource={filteredProducts}

@@ -13,6 +13,7 @@ import { useEffect } from 'react';
 import { useAuth } from '@clerk/clerk-react';
 import { setClerkInterceptor } from './api/index';
 import ProductForm from './pages/Admin/ProductForm';
+import ScrollToTop from './components/ScrollToTop';
 
 export default function App() {
   const { getToken } = useAuth();
@@ -24,10 +25,11 @@ export default function App() {
 
     <>
       <BrowserRouter>
+      <ScrollToTop/>
         <Routes>
           <Route path='/signup' element={<Signup/>} />
           <Route path='/login' element={<Login/>} />
-          <Route path='/dashboard' element={<ProductForm/>} />
+          {/* <Route path='/dashboard' element={<SingleProduct/>} /> */}
           <Route path='/' element={
             <ProtectedPage>
               <Home/>
@@ -43,11 +45,11 @@ export default function App() {
               <Orders/>
             </ProtectedPage>
           } />
-          <Route path='/product' element={
+          <Route path='/product/:id' element={
             <ProtectedPage>
               <SingleProduct/>
             </ProtectedPage>
-          } />
+        }/>
           <Route path='/cart' element={
             <ProtectedPage>
               <Cart/>
@@ -55,14 +57,6 @@ export default function App() {
           } />
         </Routes>
       </BrowserRouter>
-    {/* <header>
-      <SignedOut>
-        <SignInButton />
-      </SignedOut>
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
-    </header> */}
     </>
   );
 }

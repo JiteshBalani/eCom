@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {axiosInstance} from './index';
 
 export const getAllProducts = async() => {
