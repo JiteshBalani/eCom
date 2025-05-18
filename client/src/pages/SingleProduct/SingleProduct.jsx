@@ -1,31 +1,18 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  Row,
-  Col,
-  Card,
-  Button,
-  Rate,
-  Divider,
-  Tag,
-  message,
-  Image,
-  Carousel,
-} from "antd";
-import {
-  ShoppingCartOutlined,
-  ThunderboltOutlined,
-  CheckCircleOutlined,
-} from "@ant-design/icons";
-import { getProductById } from "../../api/products";
+import {Row,Col,Card,Button,Rate,Divider,Tag,message,Image,Carousel} from "antd";
+import {ShoppingCartOutlined,ThunderboltOutlined,CheckCircleOutlined,} from "@ant-design/icons";
+import { addProduct, getProductById } from "../../api/products";
 import RelatedProducts from "../RelatedProducts";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from '../../app/loaderSlice';
 import Loader from '../../components/Loader';
+import { addProducts } from "../../app/cartSlice";
 
 const SingleProduct = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [quantity, setQuantity] = useState(1) ;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -55,6 +42,7 @@ const SingleProduct = () => {
   };
 
   const handleAddToCart = () => {
+    dispatch(addProducts({ ...product, quantity}))
     message.success("Added to cart!");
     // your cart logic here
   };
@@ -69,6 +57,18 @@ const SingleProduct = () => {
   };
 
   const bullets = parseDescriptionToBullets(product?.description);
+
+  const increaseQuantity = () => {
+    if(quantity === 5){
+      message.warning("Only 5 units allowed!");
+      return;
+    }
+    setQuantity(quantity+ 1);
+  };
+  const decreaseQuantity = () => {
+    if(quantity === 1) return;
+    setQuantity(quantity - 1);
+  };
 
   if (!product)
     return (
@@ -180,6 +180,11 @@ const SingleProduct = () => {
 
             {/* Action Buttons */}
             <div className="flex gap-4 flex-wrap mt-2 justify-center">
+            <div className="flex justify-around items-center text-xl rounded-lg  bg-gray-200">
+              <span onClick={decreaseQuantity} className="px-3 font-bold text-sm cursor-pointer">➖</span>
+              <span className="px-3 font-semibold bg-white">{quantity}</span>
+              <span onClick={increaseQuantity} className="px-3 font-bold text-sm cursor-pointer">➕</span>
+            </div>
               <Button
                 type="primary"
                 icon={<ShoppingCartOutlined />}

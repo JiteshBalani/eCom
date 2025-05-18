@@ -1,43 +1,54 @@
-const express = require('express');
-const router = express.Router();
-const { ClerkExpressRequireAuth, default: clerkClient, ClerkExpressWithAuth } = require('@clerk/clerk-sdk-node');
-const Cart = require('../models/Cart');
+const { ClerkExpressRequireAuth, default: clerkClient } = require('@clerk/clerk-sdk-node');
+const Cart = require("../models/Cart");
+const router = require("express").Router();
 
-//get Cart
-router.get("/", ClerkExpressRequireAuth(), async (req, res) => {
-  const cart = await Cart.findOne({ userId: req.user.id }).populate("items.productId");
-  res.json(cart || { userId: req.user.id, items: [] });
-});
-
-// ADD or UPDATE item
+//CREATE
 router.post("/", ClerkExpressRequireAuth(), async (req, res) => {
-    const { productId, quantity } = req.body;
-    
-    let cart = await Cart.findOne({ userId: req.user.id });
-    if (!cart) {
-        cart = new Cart({ userId: req.user.id, items: [] });
-    }
-    
-    const existingItem = cart.items.find(item => item.productId.toString() === productId);
-    if (existingItem) {
-        existingItem.quantity = quantity;
-    } else {
-        cart.items.push({ productId, quantity });
-    }
-    
-  await cart.save();
-  res.json(cart);
+  const newCart = new Cart(req.body);
+  try {
+    const savedCart = await newCart.save();
+    res.status(200).json(savedCart);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
-// DELETE item
-router.delete("/:productId", ClerkExpressRequireAuth(), async (req, res) => {
-    const { productId } = req.params;
-    const cart = await Cart.findOne({ userId: req.user.id });
-  if (cart) {
-    cart.items = cart.items.filter(item => item.productId.toString() !== productId);
-    await cart.save();
-}
-res.json(cart);
+//UPDATE
+router.put("/:_id", ClerkExpressRequireAuth(), async (req, res) => {
+  try {
+    const updatedCart = await Cart.findByIdAndUpdate(
+      req.params._id,
+      {
+        $set: req.body,
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedCart);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
+
+//DELETE
+router.delete("/:_id", ClerkExpressRequireAuth(), async (req, res) => {
+  try {
+    await Cart.findByIdAndDelete(req.params._id);
+    res.status(200).json("Cart has been deleted...");
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//GET USER CART
+router.get("/find/:userId", ClerkExpressRequireAuth(), async (req, res) => {
+  try {
+    const cart = await Cart.findOne({ userId: req.params.userId });
+    res.status(200).json(cart);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+
 
 module.exports = router;

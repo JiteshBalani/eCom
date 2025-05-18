@@ -4,13 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { enable, disable } from "darkreader";
 import { Layout, Segmented, Flex, Badge } from "antd";
 import { Footer, Header } from "antd/es/layout/layout";
-import {
-  HomeOutlined,
-  SunOutlined,
-  MoonOutlined,
-  ShoppingCartOutlined,
-  OrderedListOutlined,
-} from "@ant-design/icons";
+import {HomeOutlined, SunOutlined, MoonOutlined, ShoppingCartOutlined, OrderedListOutlined} from "@ant-design/icons";
 import { useSelector } from "react-redux";
 
 export default function ProtectedPage({ children, adminOnly = false }) {
@@ -152,7 +146,6 @@ export default function ProtectedPage({ children, adminOnly = false }) {
             <span className="cursor-pointer" onClick={() => navigate("/cart")}>
               <Badge count={cartQuantity} color="primary" showZero>
                 <ShoppingCartOutlined style={{ fontSize: 25, color: 'white' }}/>
-                {/* <span>🛒</span> */}
               </Badge>{" "}
               Cart
             </span>

@@ -16,7 +16,6 @@ const ProductInfo = ({productInfoOpen, setProductInfoOpen, selectedProduct, onPr
   };
 
   const handleDelete = () => {
-    console.log(`delete button clicked for ${selectedProduct._id}`)
     Modal.confirm({
       title: "Are you sure you want to delete this product?",
       content: "This action cannot be undone.",
@@ -24,7 +23,6 @@ const ProductInfo = ({productInfoOpen, setProductInfoOpen, selectedProduct, onPr
       okType: "danger",
       cancelText: "Cancel",
       onOk: async () => {
-        console.log('confirm deleting, now calling api')
         const response = await deleteProduct(selectedProduct._id);
         setProductInfoOpen(false);
         message.success("Product deleted successfully!");

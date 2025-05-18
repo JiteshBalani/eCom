@@ -1,4 +1,3 @@
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react';
 import ProtectedPage from './pages/ProtectedPage';
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Login from './pages/Login';
@@ -14,6 +13,7 @@ import { useAuth } from '@clerk/clerk-react';
 import { setClerkInterceptor } from './api/index';
 import ProductForm from './pages/Admin/ProductForm';
 import ScrollToTop from './components/ScrollToTop';
+import Checkout from './pages/Checkout/Checkout';
 
 export default function App() {
   const { getToken } = useAuth();
@@ -36,7 +36,7 @@ export default function App() {
             </ProtectedPage>
           } />
           <Route path='/admin' element={
-            <ProtectedPage>
+            <ProtectedPage adminOnly={true}>
               <Admin/>
             </ProtectedPage>
           } />
@@ -53,6 +53,11 @@ export default function App() {
           <Route path='/cart' element={
             <ProtectedPage>
               <Cart/>
+            </ProtectedPage>
+          } />
+          <Route path='/checkout' element={
+            <ProtectedPage>
+              <Checkout/>
             </ProtectedPage>
           } />
         </Routes>
