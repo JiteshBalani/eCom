@@ -4,9 +4,8 @@ const { ClerkExpressRequireAuth, default: clerkClient } = require('@clerk/clerk-
 const Order = require("../models/Order");
 
 //CREATE
-router.post("/", ClerkExpressRequireAuth(), async (req, res) => {
+router.post("/create-new-order", ClerkExpressRequireAuth(), async (req, res) => {
   const newOrder = new Order(req.body);
-
   try {
     const savedOrder = await newOrder.save();
     res.status(200).json(savedOrder);

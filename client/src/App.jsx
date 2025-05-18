@@ -1,5 +1,5 @@
 import ProtectedPage from './pages/ProtectedPage';
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
 import Login from './pages/Login';
 import Signup from './pages/SignUp/Signup';
 import Dashboard from './pages/Dashboard/Dashboard';
@@ -14,6 +14,7 @@ import { setClerkInterceptor } from './api/index';
 import ProductForm from './pages/Admin/ProductForm';
 import ScrollToTop from './components/ScrollToTop';
 import Checkout from './pages/Checkout/Checkout';
+import ForbiddenPage from './pages/ErrorPages/Forbidden';
 
 export default function App() {
   const { getToken } = useAuth();
@@ -29,6 +30,7 @@ export default function App() {
         <Routes>
           <Route path='/signup' element={<Signup/>} />
           <Route path='/login' element={<Login/>} />
+          <Route path='/forbidden' element={<ForbiddenPage/>} />
           {/* <Route path='/dashboard' element={<SingleProduct/>} /> */}
           <Route path='/' element={
             <ProtectedPage>
@@ -36,7 +38,7 @@ export default function App() {
             </ProtectedPage>
           } />
           <Route path='/admin' element={
-            <ProtectedPage adminOnly={true}>
+            <ProtectedPage admin={true}>
               <Admin/>
             </ProtectedPage>
           } />
@@ -60,6 +62,8 @@ export default function App() {
               <Checkout/>
             </ProtectedPage>
           } />
+          {/* Fallback route */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </>

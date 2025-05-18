@@ -2,13 +2,19 @@ import { useAuth, UserButton } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { enable, disable } from "darkreader";
-import { Layout, Segmented, Flex, Badge } from "antd";
+import { Layout, Segmented, Flex, Badge, message } from "antd";
 import { Footer, Header } from "antd/es/layout/layout";
-import {HomeOutlined, SunOutlined, MoonOutlined, ShoppingCartOutlined, OrderedListOutlined} from "@ant-design/icons";
+import {
+  HomeOutlined,
+  SunOutlined,
+  MoonOutlined,
+  ShoppingCartOutlined,
+  OrderedListOutlined,
+} from "@ant-design/icons";
 import { useSelector } from "react-redux";
 
-export default function ProtectedPage({ children, adminOnly = false }) {
-  const { getToken } = useAuth();
+export default function ProtectedPage({ children, admin = false }) {
+  const { isLoaded, userId, getToken, isSignedIn } = useAuth();
   // const [message, setMessage] = useState("");
   const [user, setUser] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(
@@ -96,21 +102,46 @@ export default function ProtectedPage({ children, adminOnly = false }) {
   }, [isDarkMode]);
 
   useEffect(() => {
-    const fetchProtectedData = async () => {
-      const token = await getToken();
+    const checkAuth = async () => {
+      if (!isLoaded) return;
 
-      const res = await fetch("http://localhost:3000/api/user", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      // If not signed in, redirect to login
+      if (!isSignedIn) {
+        navigate("/login");
+        return;
+      }
 
-      const data = await res.json();
-      setUser(data);
+      try {
+        // Fetch user data from your backend
+        const token = await getToken();
+        const res = await fetch("http://localhost:3000/api/user", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+
+        const data = await res.json();
+        setUser(data);
+
+        // Check if admin access is required but user is not admin
+        if (admin && !data.isAdmin) {
+          message.error("You are not authorized to access this page");
+          navigate("/forbidden");
+          return;
+        }
+      } catch (error) {
+        console.error("Authentication error:", error);
+        message.error("Authentication failed. Please log in again.");
+        navigate("/login");
+      }
     };
 
-    fetchProtectedData();
-  }, []);
+    checkAuth();
+  }, [isLoaded, isSignedIn, getToken, navigate, admin]);
 
   const cartQuantity = useSelector((state) => state.cart.quantity);
 
@@ -146,6 +177,7 @@ export default function ProtectedPage({ children, adminOnly = false }) {
             <span className="cursor-pointer" onClick={() => navigate("/cart")}>
               <Badge count={cartQuantity} color="primary" showZero>
                 <ShoppingCartOutlined style={{ fontSize: 25, color: 'white' }}/>
+                {/* <span>🛒</span> */}
               </Badge>{" "}
               Cart
             </span>

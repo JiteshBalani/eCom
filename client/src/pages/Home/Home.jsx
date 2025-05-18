@@ -19,7 +19,7 @@ const Home = () => {
     dispatch(setLoading(true));
     try {
       const response = await getAllProducts();
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 2000)); 
       if (response.success) {
         setProducts(response.data);
         setFilteredProducts(response.data);
