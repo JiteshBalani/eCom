@@ -102,6 +102,7 @@ export default function ProtectedPage({ children, admin = false }) {
   }, [isDarkMode]);
 
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  console.log(BACKEND_URL);
 
   useEffect(() => {
     const checkAuth = async () => {
