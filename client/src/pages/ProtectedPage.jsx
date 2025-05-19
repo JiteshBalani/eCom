@@ -131,7 +131,7 @@ export default function ProtectedPage({ children, admin = false }) {
         setUser(data);
 
         // Check if admin access is required but user is not admin
-        if (admin && !data.isAdmin) {
+        if (admin && !data.admin) {
           message.error("You are not authorized to access this page");
           navigate("/forbidden");
           return;
