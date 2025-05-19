@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
+// const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
+const API_BASE_URL = '/api'; // This will use your Vercel proxy
 
 export const axiosInstance = axios.create({
   baseURL: API_BASE_URL,

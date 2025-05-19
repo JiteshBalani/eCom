@@ -117,7 +117,7 @@ export default function ProtectedPage({ children, admin = false }) {
       try {
         // Fetch user data from your backend
         const token = await getToken();
-        const res = await fetch(`https://shopeasy-backend-h7la.onrender.com/api/user`, {
+        const res = await fetch(`/api/user`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

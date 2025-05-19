@@ -1,6 +1,10 @@
 {
     "rewrites": [
       {
+      "source": "/api/:path*",
+      "destination": "https://shopeasy-backend-h7la.onrender.com/api/:path*"
+    },
+      {
         "source": "/(.*)",
         "destination": "/index.html"
       }

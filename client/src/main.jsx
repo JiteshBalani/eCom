@@ -16,7 +16,6 @@ if (!PUBLISHABLE_KEY) {
 }
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
     <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
@@ -24,5 +23,4 @@ createRoot(document.getElementById("root")).render(
       </ClerkProvider>
       </PersistGate>
     </Provider>
-  </StrictMode>
 );
