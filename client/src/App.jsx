@@ -9,7 +9,7 @@ import Orders from './pages/Orders/Orders'
 import SingleProduct from './pages/SingleProduct/SingleProduct'
 import Cart from './pages/Cart/Cart'
 import { useEffect } from 'react';
-import { useAuth } from '@clerk/clerk-react';
+import { ClerkProvider, useAuth } from '@clerk/clerk-react';
 import { setClerkInterceptor } from './api/index';
 import ProductForm from './pages/Admin/ProductForm';
 import ScrollToTop from './components/ScrollToTop';
