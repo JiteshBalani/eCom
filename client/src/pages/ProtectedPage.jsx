@@ -101,6 +101,8 @@ export default function ProtectedPage({ children, admin = false }) {
     }
   }, [isDarkMode]);
 
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
   useEffect(() => {
     const checkAuth = async () => {
       if (!isLoaded) return;
@@ -114,7 +116,7 @@ export default function ProtectedPage({ children, admin = false }) {
       try {
         // Fetch user data from your backend
         const token = await getToken();
-        const res = await fetch("http://localhost:3000/api/user", {
+        const res = await fetch(`${BACKEND_URL}/api/user`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
