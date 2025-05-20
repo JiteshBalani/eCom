@@ -65,7 +65,7 @@ const Home = () => {
       <Loader />
       <div className="text-xl font-semibold mb-2.5 flex flex-col-reverse gap-2 mx-[1%]"
       >
-        <span className="text-center">Explore all Products</span>
+        <span>Explore all Products</span>
         <Input
           size="large"
           placeholder="Search a product"
