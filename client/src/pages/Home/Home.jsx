@@ -63,9 +63,9 @@ const Home = () => {
       style={{ fontFamily: "montserrat", height: "100%" }}
     >
       <Loader />
-      <div className="text-xl font-semibold mx-[5%] flex items-center justify-between mb-2.5"
+      <div className="text-xl font-semibold mb-2.5 flex flex-col-reverse gap-2 mx-[1%]"
       >
-        <span>Explore all Products</span>
+        <span className="text-center">Explore all Products</span>
         <Input
           size="large"
           placeholder="Search a product"

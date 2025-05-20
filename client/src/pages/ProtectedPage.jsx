@@ -12,6 +12,8 @@ import {
   OrderedListOutlined,
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
+import { Drawer, Button, Grid } from "antd";
+import { MenuOutlined } from "@ant-design/icons";
 
 export default function ProtectedPage({ children, admin = false }) {
   const { isLoaded, userId, getToken, isSignedIn } = useAuth();
@@ -48,50 +50,10 @@ export default function ProtectedPage({ children, admin = false }) {
     ]}
   />;
 
-  // const navItems = [
-  //   {
-  //     key: "Dark",
-  //     label: (
-  //       <Segmented
-  //         options={[
-  //           {
-  //             value: "light",
-  //             icon: <SunOutlined />,
-  //           },
-  //           {
-  //             value: "dark",
-  //             icon: <MoonOutlined />,
-  //           },
-  //         ]}
-  //         value={isDarkMode ? "dark" : "light"}
-  //         onChange={(value) => toggleDarkMode(value === "dark")}
-  //         style={{
-  //           backgroundColor: isDarkMode ? "#333" : "#ddd",
-  //           padding: "5px",
-  //         }}
-  //       />
-  //     ),
-  //   },
-  //   {
-  //     key: "home",
-  //     label: <span onClick={() => navigate("/")}>Home</span>,
-  //     icon: <HomeOutlined />,
-  //   },
-  //   {
-  //     key: "orders",
-  //     label: <span onClick={() => navigate("/orders")}>My Orders</span>,
-  //     icon: <HomeOutlined />,
-  //   },
-  //   {
-  //     key: "cart",
-  //     label: <span onClick={() => navigate("/cart")}>Cart</span>,
-  //     icon: <ShoppingCartOutlined />,
-  //   },
-  //   {
-  //     key: "user",
-  //     label: <UserButton afterSignOutUrl="/login" />,
-  //   },
-  // ];
+  const { useBreakpoint } = Grid;
+  const screens = useBreakpoint();
+  const isMobile = !screens.md;
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -149,7 +111,7 @@ export default function ProtectedPage({ children, admin = false }) {
   const cartQuantity = useSelector((state) => state.cart.quantity);
 
   return (
-    <>
+    <div className="overflow-hidden">
       <Layout
         style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
       >
@@ -159,51 +121,115 @@ export default function ProtectedPage({ children, admin = false }) {
             justifyContent: "space-between",
             alignItems: "center",
             color: "white",
+            padding: "0 1rem",
           }}
         >
-          <h1 className="text-2xl font-semibold" onClick={() => navigate("/")}>
+          <h1
+            className="text-2xl font-semibold cursor-pointer"
+            onClick={() => navigate("/")}
+          >
             ShopEasy
           </h1>
-          <div
-            className="flex items-center text-lg font-semibold"
-            style={{ gap: "2rem" }}
-          >
-            <span className="cursor-pointer" onClick={() => navigate("/")}>
-              <HomeOutlined /> Home
-            </span>
-            <span
-              className="cursor-pointer"
-              onClick={() => navigate("/orders")}
+
+          {isMobile ? (
+            <>
+              <Button
+                type="text"
+                icon={<MenuOutlined />}
+                onClick={() => setDrawerOpen(true)}
+                style={{ color: "white" }}
+              />
+              <Drawer
+                title="Menu"
+                placement="right"
+                onClose={() => setDrawerOpen(false)}
+                open={drawerOpen}
+                bodyStyle={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1rem",
+                }}
+              >
+                <span
+                  className="cursor-pointer"
+                  onClick={() => {
+                    navigate("/");
+                    setDrawerOpen(false);
+                  }}
+                >
+                  🏠 Home
+                </span>
+                <span
+                  className="cursor-pointer"
+                  onClick={() => {
+                    navigate("/orders");
+                    setDrawerOpen(false);
+                  }}
+                >
+                  📦 My Orders
+                </span>
+                <span
+                  className="cursor-pointer"
+                  onClick={() => {
+                    navigate("/cart");
+                    setDrawerOpen(false);
+                  }}
+                >
+                  <Badge count={cartQuantity} color="blue" showZero>
+                    🛒 Cart
+                  </Badge>
+                </span>
+                <Segmented
+                  options={[
+                    { value: "light", icon: <SunOutlined /> },
+                    { value: "dark", icon: <MoonOutlined /> },
+                  ]}
+                  value={isDarkMode ? "dark" : "light"}
+                  onChange={(value) => toggleDarkMode(value === "dark")}
+                />
+                <UserButton afterSignOutUrl="/login" />
+              </Drawer>
+            </>
+          ) : (
+            <div
+              className="flex items-center text-lg font-semibold"
+              style={{ gap: "2rem" }}
             >
-              <OrderedListOutlined /> My Orders
-            </span>
-            <span className="cursor-pointer" onClick={() => navigate("/cart")}>
-              <Badge count={cartQuantity} color="primary" showZero>
-                <ShoppingCartOutlined style={{ fontSize: 25, color: 'white' }}/>
-                {/* <span>🛒</span> */}
-              </Badge>{" "}
-              Cart
-            </span>
-            <Segmented
-              options={[
-                {
-                  value: "light",
-                  icon: <SunOutlined />,
-                },
-                {
-                  value: "dark",
-                  icon: <MoonOutlined />,
-                },
-              ]}
-              value={isDarkMode ? "dark" : "light"}
-              onChange={(value) => toggleDarkMode(value === "dark")}
-              style={{
-                backgroundColor: isDarkMode ? "#333" : "#ddd",
-                padding: "5px",
-              }}
-            />
-            <UserButton afterSignOutUrl="/login" />
-          </div>
+              <span className="cursor-pointer" onClick={() => navigate("/")}>
+                <HomeOutlined /> Home
+              </span>
+              <span
+                className="cursor-pointer"
+                onClick={() => navigate("/orders")}
+              >
+                <OrderedListOutlined /> My Orders
+              </span>
+              <span
+                className="cursor-pointer"
+                onClick={() => navigate("/cart")}
+              >
+                <Badge count={cartQuantity} color="primary" showZero>
+                  <ShoppingCartOutlined
+                    style={{ fontSize: 25, color: "white" }}
+                  />
+                </Badge>{" "}
+                Cart
+              </span>
+              <Segmented
+                options={[
+                  { value: "light", icon: <SunOutlined /> },
+                  { value: "dark", icon: <MoonOutlined /> },
+                ]}
+                value={isDarkMode ? "dark" : "light"}
+                onChange={(value) => toggleDarkMode(value === "dark")}
+                style={{
+                  backgroundColor: isDarkMode ? "#333" : "#ddd",
+                  padding: "5px",
+                }}
+              />
+              <UserButton afterSignOutUrl="/login" />
+            </div>
+          )}
         </Header>
 
         <div className="bg-gray-100" style={{ padding: 24, flex: "1 0 auto" }}>
@@ -233,6 +259,6 @@ export default function ProtectedPage({ children, admin = false }) {
           </Flex>
         </Footer>
       </Layout>
-    </>
+    </div>
   );
 }
