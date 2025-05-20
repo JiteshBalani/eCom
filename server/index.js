@@ -14,7 +14,7 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-    origin: process.env.FRONTEND_URL, 
+    origin: ['http://localhost:5173', 'https://shopseasy.org', 'https://www.shopseasy.org', 'https://shopeasy-blond.vercel.app', 'https://e-com-eight-nu.vercel.app'], 
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true // If you're using cookies/sessions
