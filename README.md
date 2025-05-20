@@ -17,8 +17,6 @@
 - [Project Structure](#project-structure)
 - [Features](#features)
 - [Configuration](#configuration)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## 🔍 Overview
 
