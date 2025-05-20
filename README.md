@@ -2,7 +2,6 @@
 
 ![MERN Stack](https://img.shields.io/badge/Stack-MERN-green)
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![License](https://img.shields.io/badge/license-MIT-yellow)
 
 > ShopEasy is a full-featured eCommerce platform built using the MERN stack
 
