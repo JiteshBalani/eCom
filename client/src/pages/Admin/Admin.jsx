@@ -24,7 +24,7 @@ const Admin = () => {
     dispatch(setLoading(true));
     try{
       const response = await getAllProducts();
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 200));
       const allProducts = response?.data || [];
       setProducts(allProducts);
       setFilteredProducts(allProducts);

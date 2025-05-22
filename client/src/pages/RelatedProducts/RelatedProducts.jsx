@@ -11,6 +11,7 @@ const RelatedProducts = ({ currentProductId, category }) => {
     const fetchRelatedProducts = async () => {
       try {
         const response = await getAllProducts();
+        await new Promise((resolve) => setTimeout(resolve, 200));
         if (response.success) {
           const filtered = response.data.filter(
             (item) => item.category === category && item._id !== currentProductId

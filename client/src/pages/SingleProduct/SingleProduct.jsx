@@ -20,7 +20,7 @@ const SingleProduct = () => {
       dispatch(setLoading(true));
       try {
         const response = await getProductById(id);
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, 200));
         if (response.success) {
           setProduct(response.data);
         } else {
