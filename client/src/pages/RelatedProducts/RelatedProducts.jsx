@@ -31,17 +31,17 @@ const RelatedProducts = ({ currentProductId, category }) => {
 
   return (
     <div className="mt-10">
-      <h2 className="text-xl font-semibold mb-4">Products in the Same Category</h2>
+      <h2 className="text-xl font-semibold mb-4 text-center bg-gray-200 p-2 rounded-lg">Products in the Same Category</h2>
       <Row gutter={[16, 16]}>
         {relatedProducts.map((product) => (
-          <Col key={product._id} xs={24} sm={12} md={8} lg={6}>
+          <Col className='bg-gray-300 m-2 rounded-lg p-2' key={product._id} xs={24} sm={12} md={8} lg={6}>
             <Card
               hoverable
               cover={
                 <img
                   alt={product.productName}
                   src={product.imageURL[0]}
-                  style={{ height: '200px', objectFit: 'contain' }}
+                  style={{ height: '250px', objectFit: 'contain', }}
                 />
               }
               onClick={() => navigate(`/product/${product._id}`)}

@@ -63,22 +63,9 @@ const Home = () => {
       style={{ fontFamily: "montserrat", height: "100%" }}
     >
       <Loader />
-      <div className="text-xl font-semibold mb-2.5 flex flex-col-reverse gap-2 mx-[1%]"
-      >
-        <span>Explore all Products</span>
-        <Input
-          size="large"
-          placeholder="Search a product"
-          suffix={<SearchOutlined />}
-          style={{
-            fontWeight: 400,
-            fontSize: "1rem",
-            width: "350px", // Fixed width for search bar
-          }}
-          onChange={handleSearch}
-          value={searchQuery}
-        />
-      </div>
+
+      <div className="text-center text-2xl font-semibold mb-4">Explore all Products</div>
+
       <Row
         className="justify-content-center"
         gutter={{

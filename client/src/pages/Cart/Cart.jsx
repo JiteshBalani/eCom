@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Image, Button, InputNumber, Row, Col, Divider, message } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, DeleteFilled } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { addProducts, removeProducts, updateQuantity, clearCart } from '../../app/cartSlice';
 
@@ -51,9 +51,16 @@ if(cartItems.products.length === 0) return (
   );
   return (
     <div className="max-w-7xl mx-auto p-5 bg-white min-h-screen">
-    <div className='flex justify-between items-center p-1'>
-      <h1 className="text-3xl font-semibold mb-6 text-center">Your Cart</h1>
-      <div onClick={emptyCart} className='cursor-pointer text-xl font-semibold bg-gray-200 border-2 border-red-400 rounded-lg p-2'>Clear the cart</div>
+    <div className='flex justify-between items-center p-1 mb-4'>
+      <h1 className="text-2xl font-semibold text-center">Your Cart</h1>
+      <Button
+        color='danger' 
+        variant='solid'
+        icon={<DeleteFilled />}
+        onClick={emptyCart}
+      >
+          Clear the cart
+      </Button>
     </div>
       <Row gutter={[24, 24]}>
         <Col xs={24} md={16}>
