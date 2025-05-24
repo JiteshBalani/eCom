@@ -34,7 +34,7 @@ const RelatedProducts = ({ currentProductId, category }) => {
       <h2 className="text-xl font-semibold mb-4 text-center bg-gray-200 p-2 rounded-lg">Products in the Same Category</h2>
       <Row gutter={[16, 16]}>
         {relatedProducts.map((product) => (
-          <Col className='bg-gray-300 m-2 rounded-lg p-2' key={product._id} xs={24} sm={12} md={8} lg={6}>
+          <Col className='bg-gray-200 m-2 rounded-lg p-2' key={product._id} xs={24} sm={12} md={8} lg={6}>
             <Card
               hoverable
               cover={
@@ -50,7 +50,7 @@ const RelatedProducts = ({ currentProductId, category }) => {
                 title={product.productName}
                 description={
                   <>
-                    <div>₹{product.salePrice}</div>
+                    <div className='font-bold '>₹{product.salePrice}</div>
                     <Rate disabled defaultValue={product.ratings} />
                   </>
                 }
