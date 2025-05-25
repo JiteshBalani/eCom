@@ -194,7 +194,8 @@ export default function ProtectedPage({ children, admin = false }) {
             </div>
           )}
 
-          <div className="ml-4 relative w-[280px]" ref={searchRef}>
+          {isMobile ? (
+            <div className="ml-4 relative w-[280px]" ref={searchRef}>
             <Input
               allowClear
               size="medium"
@@ -226,6 +227,42 @@ export default function ProtectedPage({ children, admin = false }) {
               </div>
             )}
           </div>
+          ) : (
+            <div className="ml-4 relative w-[450px]" ref={searchRef}>
+            <Input
+              allowClear
+              size="medium"
+              placeholder="Search a product"
+              suffix={<SearchOutlined />}
+              style={{
+                fontWeight: 400,
+                fontSize: "1rem",
+                width: "450px", // Fixed width for search bar
+              }}
+              onChange={handleSearch}
+              value={searchQuery}
+            />
+            {searchProducts.length > 0 && (
+              <div className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md z-50 max-h-72 overflow-y-auto shadow-lg">
+                {searchProducts.map((product) => (
+                  <div
+                    key={product._id}
+                    className="flex gap-5 px-4 border-b border-gray-100 hover:bg-gray-100 cursor-pointer text-black"
+                    onClick={() => {
+                      setSearchQuery("");
+                      setSearchProducts([]);
+                      navigate(`/product/${product._id}`);
+                    }}
+                  >
+                    <img width='50px' height='10px' padding='10px' objectFit='cover' src={product.imageURL[0]}></img>
+                    <div className="font-semibold">{product.productName}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          )}
+          
           {isMobile ? (
             <>
               <Button
