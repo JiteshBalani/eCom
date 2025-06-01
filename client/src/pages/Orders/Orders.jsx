@@ -44,7 +44,10 @@ const Orders = () => {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
-      <h2 className="text-3xl font-bold mb-6 text-center">My Orders</h2>
+    <div className="flex justify-between items-center mb-6">
+      <h2 className="text-3xl font-bold text-center">My Orders</h2>
+      <h2 className="font-semibold text-center text-lg">Total orders: {orders.length}</h2>
+    </div>
       {loading ? (
         <div className="flex justify-center py-20">
           <Spin size="large" />
@@ -56,7 +59,7 @@ const Orders = () => {
         />
       ) : (
         <div className="grid grid-cols-1 gap-6">
-          {orders.map((order) => (
+          {orders.slice(0).reverse().map((order) => (
             <Card
               key={order._id}
               title={

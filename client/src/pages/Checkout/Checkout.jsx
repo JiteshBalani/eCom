@@ -6,6 +6,7 @@ import { useUser } from "@clerk/clerk-react";
 import { clearCart } from "../../app/cartSlice";
 import { createNewOrder } from "../../api/orders";
 import { setLoading } from "../../app/loaderSlice";
+import { PoweroffOutlined, SyncOutlined } from '@ant-design/icons';
 
 const Checkout = () => {
   const cartItems = useSelector((state) => state.cart);
@@ -18,6 +19,9 @@ const Checkout = () => {
   //     (acc, item) => acc + item.quantity * item.salePrice,
   //     0
   //   );
+
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
   const totalAmount = useSelector((state) => state.cart.total);
 
   const handleOrder = async (values, paymentMode) => {
@@ -36,9 +40,11 @@ const Checkout = () => {
       status: paymentMode === "cod" ? "pending" : "payment-pending",
     };
 
+    setIsButtonDisabled(true);
     dispatch(setLoading(true));
     try {
       const response = await createNewOrder(orderPayload);
+      message.loading('Processing... Please wait!')
       await new Promise((resolve) => setTimeout(resolve, 2000));
       if (response) {
         dispatch(clearCart());
@@ -48,6 +54,7 @@ const Checkout = () => {
     } catch (error) {
       console.error(error);
       message.error("Something went wrong while placing the order.");
+      setIsButtonDisabled(false);
     } finally {
       dispatch(setLoading(false));
     }
@@ -130,7 +137,7 @@ const Checkout = () => {
               <Button
                 type="default"
                 htmlType="submit"
-                // loading={loading}
+                disabled={isButtonDisabled}
                 className="w-full sm:w-1/2 text-white bg-green-600 hover:bg-green-700"
               >
                 Cash on Delivery
